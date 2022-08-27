@@ -25,6 +25,7 @@ struct Node* DeleteDLL(int pos, struct Node* head);
 
 struct Node* ReverseDLL(struct Node* head);
 
+
 //function declaration CDLL
 
 struct Node* createCDLL(int a[], int n);
@@ -33,10 +34,45 @@ void DisplayCDLL(struct Node* head);
 
 int countNodeCDLL(struct Node* head);
 
+struct Node* InsertCDLL(int pos, int val, struct Node* head);
+
+struct Node* DeleteCDLL(int pos, struct Node* head);
+
+
 
 
 
 //functions of CDLL
+
+
+struct Node* DeleteCDLL(int pos, struct Node* head)
+{
+    //empty list and check the valid position
+    if (pos<1 || pos> countNodeCDLL(head))
+    {
+        cout << "Invalid Position -> Deletion not possible "<<endl;
+        return head;
+    }
+    //single node
+
+    if (head->next == head)
+    {
+        delete head;
+        return NULL;
+    }
+
+    //more than one node
+    struct Node* p = head;
+    for (int i = 0;i < pos - 1;i++)
+        p = p->next;
+
+    p->next->prev = p->prev;
+    p->prev->next = p->next;
+    if (pos == 1)
+        head = p->next;
+    return head;
+
+}
 
 
 struct Node* InsertCDLL(int pos, int val, struct Node* head)
@@ -82,6 +118,7 @@ struct Node* InsertCDLL(int pos, int val, struct Node* head)
 
 }
 
+
 int countNodeCDLL(struct Node* head)
 {
     if (!head)
@@ -96,6 +133,7 @@ int countNodeCDLL(struct Node* head)
     }
     return ++count;
 }
+
 
 void DisplayCDLL(struct Node* head)
 {
@@ -115,6 +153,7 @@ void DisplayCDLL(struct Node* head)
 
     cout << endl;
 }
+
 
 struct Node* createCDLL(int a[], int n)
 {
@@ -393,7 +432,7 @@ int main()
     DisplayDLL(Head);
 
 
-    HeadCDLL = createCDLL(a,5);
+    HeadCDLL = createCDLL(a,0);
     cout << "creating the circularly Doubly linked list " << endl;
     DisplayCDLL(HeadCDLL);
 
@@ -401,6 +440,10 @@ int main()
 
     HeadCDLL = InsertCDLL(0,500,HeadCDLL);
     cout << "After Insertion in the circularly Doubly linked list " << endl;
+    DisplayCDLL(HeadCDLL);
+
+    HeadCDLL = DeleteCDLL(1,HeadCDLL);
+    cout << "After Deletion in the circularly Doubly linked list " << endl;
     DisplayCDLL(HeadCDLL);
 
 }
