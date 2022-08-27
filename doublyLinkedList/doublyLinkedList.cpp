@@ -8,13 +8,94 @@ struct Node
     struct Node* next;
 }*Head,*Last;
 
+
+//function declaration
+
+
 struct Node* createDLL(int a[], int n);
 
 void DisplayDLL(struct Node* head);
 
 struct Node* createDLL2(int a[], int n);
 
+int countNodesDLL(struct Node* head);
 
+struct Node* InsertDLL(struct Node* head, int pos, int val);
+
+
+
+
+
+
+
+
+//functions
+
+
+
+
+
+struct Node* InsertDLL(struct Node* head, int pos, int val)
+{
+    //check pos
+    if (pos<0 || pos > countNodesDLL(head))
+    {
+        cout << "Invalis position -> Insertion is Not possible" << endl;
+        return head;
+    }
+   
+    //empty list
+    struct Node* temp = new Node;
+    temp->data = val;
+
+    if (!head)
+    {
+        temp->next = temp->prev = NULL;
+        head = temp;
+        return head;
+    }
+    //non empty but insert before head
+    if (pos == 0)
+    {
+        temp->next = head;
+        head->prev = temp;
+        temp->prev = NULL;
+        head = temp;   
+    }
+    //non empty insert other than head or last
+    else
+    {
+        struct Node* p = head;
+
+        for (int i = 0;i < pos - 1;i++)
+            p = p->next;
+
+        temp->next = p->next;
+        temp->prev = p;
+        p->next = temp;
+        if (temp->next)
+            temp->next->prev = temp;
+        
+    }
+    return head;
+}
+
+
+int countNodesDLL(struct Node* head)
+{
+    if (!head)
+        return 0;
+
+    int count = 0;
+    struct Node* temp = head;
+
+    while (temp)
+    {
+        count++;
+        temp = temp->next;
+    }
+    return count;
+}
 
 
 void DisplayDLL(struct Node* head)
@@ -37,7 +118,7 @@ void DisplayDLL(struct Node* head)
         cout << p->data<<" ";
         p = p->next;
     }
-
+    cout << endl;
 }
 
 
@@ -116,6 +197,10 @@ int main()
 {
     int a[5] = { 10,20,30,40,50 };
     Head=createDLL2(a, 5);
+    DisplayDLL(Head);
+    cout << "Number of nodes in list :" << countNodesDLL(Head) << endl;
+    Head = InsertDLL(Head, 0, 5);
+    cout << "After Insertion" << endl;
     DisplayDLL(Head);
 
 }
