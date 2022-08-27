@@ -31,8 +31,39 @@ struct Node* InsertDLL(struct Node* head, int pos, int val);
 
 //functions
 
+struct Node* DeleteDLL(int pos, struct Node* head)
+{
+    //check valid postion
+    if (pos<1 || pos>countNodesDLL(head))
+    {
+        cout << "Invalid position passed -> Deletion is not possible " << endl;
+        return head;
+    }
 
+    //deletion on first node
+    struct Node* p = head;
+    if (pos == 1)
+    {
+        head = head->next;
+        if (head)
+            head->prev = NULL;
+    }
 
+    //delete any other node
+    else
+    {
+        for (int i = 0;i < pos - 1;i++)
+            p = p->next;
+
+        p->prev->next = p->next;
+
+        if (p->next)
+            p->next->prev = p->prev;
+    }
+    delete p;
+
+    return head;
+}
 
 
 struct Node* InsertDLL(struct Node* head, int pos, int val)
@@ -202,6 +233,10 @@ int main()
     Head = InsertDLL(Head, 0, 5);
     cout << "After Insertion" << endl;
     DisplayDLL(Head);
+    Head = DeleteDLL(1, Head);
+    cout << "After Deletion" << endl;
+    DisplayDLL(Head);
+
 
 }
 
