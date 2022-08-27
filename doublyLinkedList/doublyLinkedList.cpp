@@ -22,14 +22,41 @@ int countNodesDLL(struct Node* head);
 
 struct Node* InsertDLL(struct Node* head, int pos, int val);
 
+struct Node* DeleteDLL(int pos, struct Node* head);
 
-
+struct Node* ReverseDLL(struct Node* head);
 
 
 
 
 
 //functions
+
+struct Node* ReverseDLL(struct Node* head)
+{
+    //empty list or list with single node
+
+    if (!head || !head->next)
+        return head;
+
+
+    //non empty list with more than one node
+
+    struct Node* p = head, * temp = NULL;
+
+    while (p)
+    {
+        temp = p->next;
+        p->next = p->prev;
+        p->prev = temp;
+        if (!p->prev)
+            head = p;
+        p = p->prev;
+        
+    }
+    return head;
+}
+
 
 struct Node* DeleteDLL(int pos, struct Node* head)
 {
@@ -227,16 +254,22 @@ struct Node* createDLL(int a[], int n)
 int main()
 {
     int a[5] = { 10,20,30,40,50 };
-    Head=createDLL2(a, 5);
+    Head=createDLL2(a, 2);
     DisplayDLL(Head);
+
     cout << "Number of nodes in list :" << countNodesDLL(Head) << endl;
+
     Head = InsertDLL(Head, 0, 5);
     cout << "After Insertion" << endl;
     DisplayDLL(Head);
+
     Head = DeleteDLL(1, Head);
     cout << "After Deletion" << endl;
     DisplayDLL(Head);
 
+    Head = ReverseDLL(Head);
+    cout << "After Reversing Doubly linked list " << endl;
+    DisplayDLL(Head);
 
 }
 
