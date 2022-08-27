@@ -6,11 +6,10 @@ struct Node
     struct Node* prev;
     int data;
     struct Node* next;
-}*Head,*Last;
+}*Head=NULL,*HeadCDLL=NULL;
 
 
-//function declaration
-
+//function declaration DLL
 
 struct Node* createDLL(int a[], int n);
 
@@ -26,11 +25,133 @@ struct Node* DeleteDLL(int pos, struct Node* head);
 
 struct Node* ReverseDLL(struct Node* head);
 
+//function declaration CDLL
+
+struct Node* createCDLL(int a[], int n);
+
+void DisplayCDLL(struct Node* head);
+
+int countNodeCDLL(struct Node* head);
 
 
 
 
-//functions
+//functions of CDLL
+
+
+struct Node* InsertCDLL(int pos, int val, struct Node* head)
+{
+    //check for position
+    if (pos<0 || pos>countNodeCDLL(head))
+    {
+        cout << "Invalid Position -> Insertion Not possible " << endl;
+        return head;
+    }
+
+    struct Node* newnode = new Node;
+    newnode->data = val;
+
+    //empty list
+    if (!head)
+    {
+        newnode->next = newnode->prev = newnode;
+        return newnode;
+    }
+
+    //non empty list
+
+    struct Node* p = head;
+    if (pos == 0 || pos== countNodeCDLL(head))
+    {
+        p = p->prev;
+    }
+    else
+    {
+        for (int i = 0;i < pos - 1;i++)
+            p = p->next;
+    }
+
+    newnode->next = p->next;
+    newnode->prev = p;
+    p->next = newnode;
+    newnode->next->prev = newnode;
+   
+    if (pos == 0)
+        head = newnode;
+    return head;
+
+}
+
+int countNodeCDLL(struct Node* head)
+{
+    if (!head)
+        return 0;
+    
+    int count = 0;
+    struct Node* p = head;
+    while(p->next != head)
+    {
+        count++;
+        p = p->next;
+    }
+    return ++count;
+}
+
+void DisplayCDLL(struct Node* head)
+{
+    if (!head)
+    {
+        cout << "Empty List"<<endl;
+        return ;
+    }
+
+    struct Node* p = head;
+
+    do
+    {
+        cout << p->data<<" ";
+        p = p->next;
+    } while (p != head);
+
+    cout << endl;
+}
+
+struct Node* createCDLL(int a[], int n)
+{
+    
+    //empty list
+    if (n == 0)
+        return NULL;
+
+    //list with single element
+    struct Node* head = new Node;
+    head->data = a[0];
+    head->next = head->prev = head;
+    if (n == 1)
+    return head;
+
+    //list with more than one element 
+    struct Node* p = head;
+    for (int i = 1;i < n;i++)
+    {
+        struct Node* temp = new Node;
+        temp->data = a[i];
+        temp->next = p->next;
+        temp->prev = p;
+
+        p->next = temp;
+        temp->next->prev = temp;
+
+        p = temp;
+    }
+    return head;
+}
+
+
+
+
+
+//functions of DLL
 
 struct Node* ReverseDLL(struct Node* head)
 {
@@ -270,6 +391,17 @@ int main()
     Head = ReverseDLL(Head);
     cout << "After Reversing Doubly linked list " << endl;
     DisplayDLL(Head);
+
+
+    HeadCDLL = createCDLL(a,5);
+    cout << "creating the circularly Doubly linked list " << endl;
+    DisplayCDLL(HeadCDLL);
+
+    cout << "Number of nodes in circular DLL : " << countNodeCDLL(HeadCDLL) << endl;
+
+    HeadCDLL = InsertCDLL(0,500,HeadCDLL);
+    cout << "After Insertion in the circularly Doubly linked list " << endl;
+    DisplayCDLL(HeadCDLL);
 
 }
 
