@@ -254,7 +254,7 @@ struct Node* createDLL(int a[], int n)
 int main()
 {
     int a[5] = { 10,20,30,40,50 };
-    Head=createDLL2(a, 2);
+    Head=createDLL2(a, 5);
     DisplayDLL(Head);
 
     cout << "Number of nodes in list :" << countNodesDLL(Head) << endl;
